@@ -7,6 +7,7 @@ const completeTodoBtn = document.querySelector(".todo_complete")
 const removeTodoBtn = document.querySelector(".todo_delete")
 
 const todoTitle = document.querySelector('.add_todo_input')
+const todoContainer = document.querySelector('.todo_list')
 
 // create reducer
 
@@ -46,4 +47,26 @@ addTodoBtn.addEventListener('click' , event=>{
     store.dispatch(addTodoAction(newTodoTitle))
     const todos = store.getState()
     todoTitle.value = ""
+    showTodoDom(todos)
 })
+
+
+// Show Todo Dom
+function showTodoDom (todos){
+    todoContainer.innerHTML = '';
+    todos.forEach(todo=>{
+        todoContainer.insertAdjacentHTML("beforeend",`
+        <div class="todo">
+        <span class="todo_text">${todo.title}</span>
+           <div class="todo_btn_wrapper">
+               <button class="todo_complete todo_btn">
+                   <i class="fa fa-check"></i>
+               </button>
+               <button class="todo_delete todo_btn">
+                   <i class="fa fa-trash"></i>
+               </button>
+           </div>
+       </div>
+        `)
+    })
+}
