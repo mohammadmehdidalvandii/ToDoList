@@ -21,3 +21,4 @@ function todoReducer (state=[], action){
 
 // create Redux store
 const store = Redux.createStore(todoReducer)
+console.log(store);
