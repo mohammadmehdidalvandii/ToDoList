@@ -56,8 +56,16 @@ function todoReducer (state=[], action){
 
 // create Redux store
 const store = Redux.createStore(todoReducer)
-
-
+// add todo by Enter Key
+todoTitle.addEventListener("keypress" , event=>{
+   if(event.key === "Enter"){
+    const newTodoTitle = todoTitle.value.trim() 
+    store.dispatch(addTodoAction(newTodoTitle))
+    const todos = store.getState()
+    todoTitle.value = ""
+    showTodoDom(todos)
+   }
+})
 
 // add todo 
 addTodoBtn.addEventListener('click' , event=>{
