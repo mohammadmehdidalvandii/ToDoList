@@ -146,4 +146,11 @@ align-items: center;
 .todo_delete:hover{
     background-color: var(--color-red-2);
 }
+
+
+.isCompleted{
+    text-decoration: line-through;
+    color:#000;
+    opacity: 0.5;
+}
 /* --------------- Style project -------------------- */

@@ -1,8 +1,9 @@
 import { addTodo , completeTodo , removeTodo } from "../Redux/ActionType.js"
 
-import { addTodoAction, removeTodoAction } from "../Redux/ActionCreator.js"
+import { addTodoAction, removeTodoAction , completeTodoAction } from "../Redux/ActionCreator.js"
 
 window.removeTodoHandler = removeTodoHandler;
+window.doTodoHandler = doTodoHandler;
 
 
 const addTodoBtn = document.querySelector(".add_todo_btn")
@@ -20,15 +21,26 @@ function todoReducer (state=[], action){
     switch(action.type){
         case addTodo:{
             let newState = [...state]
-            let newObjTodo = {
-                id:crypto.randomUUID(),
-                title:action.title,
-                isCompleted:false 
+            if( todoTitle.value === ''){
+                alert("مقدار خالی است ")
+            }else{
+                let newObjTodo = {
+                    id:crypto.randomUUID(),
+                    title:action.title,
+                    isCompleted:false 
+                }
+                newState.push(newObjTodo)
             }
-            newState.push(newObjTodo)
+            
             return newState
         }
         case completeTodo:{
+            const newState = [...state]
+            newState.some((todo)=>{
+                if(todo.id === action.id){
+                    todo.isCompleted = !todo.isCompleted
+                }
+            })
             return state
         }
         case removeTodo:{
@@ -64,15 +76,22 @@ function removeTodoHandler (todoID){
     showTodoDom(todos);
 }
 
+// completed todo
+function doTodoHandler(todoID){
+store.dispatch(completeTodoAction(todoID));
+const todos = store.getState();
+showTodoDom(todos)
+}
+
 // Show Todo Dom
 function showTodoDom (todos){
     todoContainer.innerHTML = '';
     todos.forEach(todo=>{
         todoContainer.insertAdjacentHTML("beforeend",`
-        <div class="todo">
+        <div class="todo  ${todo.isCompleted && "isCompleted"}" >
         <span class="todo_text">${todo.title}</span>
            <div class="todo_btn_wrapper">
-               <button class="todo_complete todo_btn">
+               <button class="todo_complete todo_btn" onclick=doTodoHandler("${todo.id}")>
                    <i class="fa fa-check"></i>
                </button>
                <button class="todo_delete todo_btn" onclick=removeTodoHandler("${todo.id}")>
