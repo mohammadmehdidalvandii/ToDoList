@@ -14,7 +14,7 @@ function completeTodoAction(id){
 }
 function removeTodoAction(id){
     return{
-        type :completeTodo,
+        type :removeTodo,
         id
     }
 }

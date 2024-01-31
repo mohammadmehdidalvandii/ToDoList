@@ -1,6 +1,9 @@
 import { addTodo , completeTodo , removeTodo } from "../Redux/ActionType.js"
 
-import { addTodoAction } from "../Redux/ActionCreator.js"
+import { addTodoAction, removeTodoAction } from "../Redux/ActionCreator.js"
+
+window.removeTodoHandler = removeTodoHandler;
+
 
 const addTodoBtn = document.querySelector(".add_todo_btn")
 const completeTodoBtn = document.querySelector(".todo_complete")
@@ -8,6 +11,8 @@ const removeTodoBtn = document.querySelector(".todo_delete")
 
 const todoTitle = document.querySelector('.add_todo_input')
 const todoContainer = document.querySelector('.todo_list')
+
+
 
 // create reducer
 
@@ -27,7 +32,9 @@ function todoReducer (state=[], action){
             return state
         }
         case removeTodo:{
-            return state
+            const copyState = [...state];
+            let newState = copyState.filter((todo)=> todo.id !== action.id);
+            return newState;
         }
         default:{
             return state
@@ -50,6 +57,12 @@ addTodoBtn.addEventListener('click' , event=>{
     showTodoDom(todos)
 })
 
+// remove todo
+function removeTodoHandler (todoID){
+    store.dispatch(removeTodoAction(todoID));
+    const todos = store.getState();
+    showTodoDom(todos);
+}
 
 // Show Todo Dom
 function showTodoDom (todos){
@@ -62,7 +75,7 @@ function showTodoDom (todos){
                <button class="todo_complete todo_btn">
                    <i class="fa fa-check"></i>
                </button>
-               <button class="todo_delete todo_btn">
+               <button class="todo_delete todo_btn" onclick=removeTodoHandler("${todo.id}")>
                    <i class="fa fa-trash"></i>
                </button>
            </div>
